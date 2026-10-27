@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Techfest 3.0 — Unleash Your Inner Cyborg | IIT Bombay</title>
+<meta name="description" content="Techfest 3.0, IIT Bombay — India's largest student innovation festival, rewired. 120+ events, 60+ teams, four days where human ingenuity fuses with machine intelligence. 19–22 February 2027." />
+<meta name="theme-color" content="#04060a" />
+<meta name="color-scheme" content="dark light" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Techfest 3.0 — Unleash Your Inner Cyborg" />
+<meta property="og:description" content="A cyborg-themed landing experience for Techfest 3.0, IIT Bombay. 19–22 February 2027." />
+<meta property="og:image" content="assets/img/cyborg-hero.webp" />
+<meta name="twitter:card" content="summary_large_image" />
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M32 3 58 17v30L32 61 6 47V17z' fill='none' stroke='%2300f0ff' stroke-width='3'/%3E%3Cpath d='M20 22h24M32 22v22' stroke='%23ff2d95' stroke-width='5' stroke-linecap='square'/%3E%3C/svg%3E" />
+
+<link rel="preload" href="assets/fonts/orbitron-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="assets/fonts/space-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="css/style.css" />
+
+<script>
+  /* Progressive enhancement flag + hard safety net: if the interaction layer
+     ever fails to load, reveal all content and dismiss the boot screen. */
+  document.documentElement.className += ' js';
+  window.addEventListener('load', function () {
+    setTimeout(function () {
+      var boot = document.getElementById('boot');
+      if (boot && !boot.classList.contains('is-done')) boot.classList.add('is-done');
+      Array.prototype.forEach.call(document.querySelectorAll('.reveal'), function (el) {
+        el.classList.add('is-in');
+      });
+    }, 5000);
+  });
+</script>
+</head>
+
+<body>
+
+<!-- ══════════════════ BOOT SEQUENCE ══════════════════ -->
+<div class="boot" id="boot" role="status" aria-live="polite" aria-label="Loading Techfest 3.0">
+  <div class="boot__inner">
+    <div class="boot__mark">
+      <svg viewBox="0 0 64 64" aria-hidden="true" class="boot__logo">
+        <path d="M32 3 58 17v30L32 61 6 47V17z" fill="none" stroke="currentColor" stroke-width="2" opacity=".55"/>
+        <path d="M32 12 50 22v20L32 52 14 42V22z" fill="none" stroke="currentColor" stroke-width="1" opacity=".3"/>
+        <path d="M21 23h22M32 23v20" stroke="currentColor" stroke-width="4" stroke-linecap="square"/>
+      </svg>
+    </div>
+    <pre class="boot__log" id="bootLog"></pre>
+    <div class="boot__bar"><span id="bootBar"></span></div>
+    <p class="boot__hint mono">ESTABLISHING NEURAL LINK…</p>
+  </div>
+</div>
+
+<!-- ══════════════════ CURSOR + OVERLAYS ══════════════════ -->
+<div class="cursor" id="cursor" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+<div class="scroll-progress" aria-hidden="true"><span id="scrollBar"></span></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="scanlines" aria-hidden="true"></div>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- ══════════════════ HEADER ══════════════════ -->
+<header class="header" id="header">
+  <div class="header__inner container">
+    <a class="logo" href="#top" aria-label="Techfest 3.0 — home">
+      <span class="logo__mark" aria-hidden="true">
+        <svg viewBox="0 0 64 64">
+          <path class="logo__hex" d="M32 3 58 17v30L32 61 6 47V17z" fill="none" stroke="currentColor" stroke-width="2"/>
+          <path class="logo__hex2" d="M32 13 49 22v20L32 51 15 42V22z" fill="none" stroke="currentColor" stroke-width="1" opacity=".35"/>
+          <path class="logo__t" d="M21 24h22M32 24v19" stroke="currentColor" stroke-width="4" stroke-linecap="square"/>
+          <circle class="logo__node" cx="32" cy="24" r="2.6" fill="var(--magenta)"/>
+        </svg>
+      </span>
+      <span class="logo__text">
+        <strong>TECHFEST</strong>
+        <em>3.0 &middot; IIT BOMBAY</em>
+      </span>
+    </a>
+
+    <nav class="nav" id="nav" aria-label="Primary">
+      <ul class="nav__list">
+        <li><a href="#protocol" data-nav>Protocol</a></li>
+        <li><a href="#domains" data-nav>Domains</a></li>
+        <li><a href="#schedule" data-nav>Schedule</a></li>
+        <li><a href="#speakers" data-nav>Speakers</a></li>
+        <li><a href="#faq" data-nav>FAQ</a></li>
+      </ul>
+      <div class="nav__actions">
+        <button class="mode-toggle" id="modeToggle" type="button" aria-pressed="false" title="Toggle interface mode">
+          <span class="mode-toggle__icon" aria-hidden="true">
+            <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+            <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.2 5.2l1.4 1.4M17.4 17.4l1.4 1.4M18.8 5.2l-1.4 1.4M6.6 17.4l-1.4 1.4"/></svg>
+          </span>
+          <span class="mode-toggle__label mono" id="modeLabel">NIGHT</span>
+        </button>
+        <a class="btn btn--primary btn--sm magnetic" href="#register">
+          <span class="btn__label">Get Passes</span>
+          <span class="btn__glitch" aria-hidden="true" data-text="Get Passes">Get Passes</span>
+        </a>
+      </div>
+    </nav>
+
+    <button class="burger" id="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="header__rule" aria-hidden="true"></div>
+</header>
+
+<!-- ══════════════════ MOBILE MENU ══════════════════ -->
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <div class="mobile-menu__grid" aria-hidden="true"></div>
+  <nav aria-label="Mobile">
+    <ul>
+      <li><a href="#protocol" data-mnav><em>01</em> Protocol</a></li>
+      <li><a href="#domains" data-mnav><em>02</em> Domains</a></li>
+      <li><a href="#schedule" data-mnav><em>03</em> Schedule</a></li>
+      <li><a href="#speakers" data-mnav><em>04</em> Speakers</a></li>
+      <li><a href="#showcase" data-mnav><em>05</em> Showcase</a></li>
+      <li><a href="#faq" data-mnav><em>06</em> FAQ</a></li>
+      <li><a href="#register" data-mnav><em>07</em> Register</a></li>
+    </ul>
+  </nav>
+  <div class="mobile-menu__foot mono">
+    <span>19–22 FEB 2027</span><span>IIT BOMBAY</span>
+  </div>
+</div>
+
+<main id="main">
+<span id="top"></span>
+
+<!-- ══════════════════ HERO ══════════════════ -->
+<section class="hero" id="signal">
+  <canvas class="hero__canvas" id="particles" aria-hidden="true"></canvas>
+  <div class="hero__grid-bg" aria-hidden="true"></div>
+  <div class="hero__glow hero__glow--a" aria-hidden="true"></div>
+  <div class="hero__glow hero__glow--b" aria-hidden="true"></div>
+
+  <div class="hero__inner container">
+    <div class="hero__copy">
+      <p class="status-pill reveal" data-delay="0">
+        <span class="status-pill__dot" aria-hidden="true"></span>
+        <span class="mono">SYSTEM ONLINE</span>
+        <span class="status-pill__sep" aria-hidden="true">//</span>
+        <span class="mono">TECHFEST 3.0 · IIT BOMBAY</span>
+      </p>
+
+      <h1 class="hero__title">
+        <span class="hero__line reveal" data-delay="1">UNLEASH</span>
+        <span class="hero__line reveal" data-delay="2">YOUR INNER</span>
+        <span class="hero__line hero__line--accent reveal" data-delay="3" data-glitch="CYBORG">CYBORG</span>
+      </h1>
+
+      <p class="hero__lead reveal" data-delay="4">
+        Four days where human ingenuity fuses with machine intelligence: <strong>120+ events</strong>,
+        <strong>60+ teams</strong> and one shared nervous network. India's largest student innovation
+        festival, rewired for a new era.
+      </p>
+
+      <div class="hero__cta reveal" data-delay="5">
+        <a class="btn btn--primary btn--lg magnetic" href="#register">
+          <span class="btn__label">Claim your pass</span>
+          <span class="btn__glitch" aria-hidden="true" data-text="Claim your pass">Claim your pass</span>
+          <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+        </a>
+        <a class="btn btn--ghost btn--lg magnetic" href="#schedule">
+          <svg class="btn__play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>
+          <span class="btn__label">Explore schedule</span>
+        </a>
+      </div>
+
+      <div class="countdown reveal" data-delay="6" data-countdown="2027-02-19T09:00:00+05:30">
+        <p class="countdown__label mono">TRANSMISSION BEGINS IN</p>
+        <div class="countdown__units">
+          <div class="countdown__unit"><span class="countdown__num" data-unit="days">--</span><span class="countdown__cap mono">Days</span></div>
+          <div class="countdown__unit"><span class="countdown__num" data-unit="hours">--</span><span class="countdown__cap mono">Hrs</span></div>
+          <div class="countdown__unit"><span class="countdown__num" data-unit="minutes">--</span><span class="countdown__cap mono">Min</span></div>
+          <div class="countdown__unit"><span class="countdown__num" data-unit="seconds">--</span><span class="countdown__cap mono">Sec</span></div>
+        </div>
+        <p class="countdown__date mono">19 — 22 FEB 2027 &nbsp;·&nbsp; IIT BOMBAY, POWAI</p>
+      </div>
+    </div>
+
+    <div class="hero__visual reveal" data-delay="3">
+      <div class="hud" data-parallax>
+        <div class="hud__ring hud__ring--1" aria-hidden="true"></div>
+        <div class="hud__ring hud__ring--2" aria-hidden="true"></div>
+        <div class="hud__ring hud__ring--3" aria-hidden="true"></div>
+
+        <figure class="hud__portrait">
+          <img src="assets/img/cyborg-hero.webp" alt="Portrait of a cybernetic figure with chrome plating and glowing neural implants" width="1100" height="1467" fetchpriority="high" decoding="async" />
+          <span class="hud__scan" aria-hidden="true"></span>
+          <span class="hud__vignette" aria-hidden="true"></span>
+        </figure>
+
+        <span class="hud__corner hud__corner--tl" aria-hidden="true"></span>
+        <span class="hud__corner hud__corner--tr" aria-hidden="true"></span>
+        <span class="hud__corner hud__corner--bl" aria-hidden="true"></span>
+        <span class="hud__corner hud__corner--br" aria-hidden="true"></span>
+
+        <span class="hud__chip hud__chip--1 mono" aria-hidden="true">OPTICS: ONLINE</span>
+        <span class="hud__chip hud__chip--2 mono" aria-hidden="true">SYNC 98.7%</span>
+        <span class="hud__chip hud__chip--3 mono" aria-hidden="true">ID: TF30-AX</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero__stats container" data-reveal-group>
+    <div class="stat reveal" data-delay="0"><span class="stat__num" data-count="120" data-suffix="+">0</span><span class="stat__label mono">Events</span></div>
+    <div class="stat reveal" data-delay="1"><span class="stat__num" data-count="60" data-suffix="+">0</span><span class="stat__label mono">Teams</span></div>
+    <div class="stat reveal" data-delay="2"><span class="stat__num" data-count="25" data-suffix="K">0</span><span class="stat__label mono">Footfall</span></div>
+    <div class="stat reveal" data-delay="3"><span class="stat__num" data-count="40" data-prefix="₹" data-suffix="L">0</span><span class="stat__label mono">Prize pool</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════ TICKER ══════════════════ -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker__track">
+    <div class="ticker__group">
+      <span>ROBOTICS</span><i>◆</i><span>AI &amp; MACHINE LEARNING</span><i>◆</i><span>CYBERSECURITY</span><i>◆</i><span>WEB DEVELOPMENT</span><i>◆</i><span>GAME DEV</span><i>◆</i><span>ESPORTS</span><i>◆</i><span>DESIGN</span><i>◆</i><span>STARTUPS</span><i>◆</i><span>QUADROTOR</span><i>◆</i><span>VR / AR</span><i>◆</i>
+    </div>
+    <div class="ticker__group">
+      <span>ROBOTICS</span><i>◆</i><span>AI &amp; MACHINE LEARNING</span><i>◆</i><span>CYBERSECURITY</span><i>◆</i><span>WEB DEVELOPMENT</span><i>◆</i><span>GAME DEV</span><i>◆</i><span>ESPORTS</span><i>◆</i><span>DESIGN</span><i>◆</i><span>STARTUPS</span><i>◆</i><span>QUADROTOR</span><i>◆</i><span>VR / AR</span><i>◆</i>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ PROTOCOL ══════════════════ -->
+<section class="section" id="protocol">
+  <div class="container">
+    <header class="sec-head">
+      <p class="sec-head__index mono">01 <span>//</span> PROTOCOL</p>
+      <h2 class="sec-head__title" data-glitch="THE PROTOCOL">THE PROTOCOL</h2>
+      <p class="sec-head__sub">Four systems run in parallel across every edition. Together they turn a campus into a living machine.</p>
+    </header>
+
+    <div class="cards" data-reveal-group>
+      <article class="card card--feature reveal" data-delay="0" data-tilt>
+        <span class="card__num mono">01</span>
+        <span class="card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.4"/><circle cx="5" cy="5" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M7 7l3 3M17 7l-3 3M7 17l3-3M17 17l-3-3"/></svg>
+        </span>
+        <h3>Neural Mesh</h3>
+        <p>Every attendee, mentor and judge is plugged into one shared network. Live leaderboards, instant team matchmaking and a real-time ops channel keep the whole festival in sync.</p>
+        <ul class="card__tags mono"><li>live ops</li><li>matchmaking</li></ul>
+      </article>
+
+      <article class="card card--feature reveal" data-delay="1" data-tilt>
+        <span class="card__num mono">02</span>
+        <span class="card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="19" height="13" rx="1.5"/><path d="M8 20.5h8M12 17v3.5M6 8.5h6M6 12h4"/></svg>
+        </span>
+        <h3>Augmented Stage</h3>
+        <p>The main auditorium runs on a 40-foot LED volume with volumetric holography, live volumetric capture and real-time speech translation across eight languages.</p>
+        <ul class="card__tags mono"><li>holography</li><li>volumetric</li></ul>
+      </article>
+
+      <article class="card card--feature reveal" data-delay="2" data-tilt>
+        <span class="card__num mono">03</span>
+        <span class="card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18c-4 1.2-4-2.2-6-2.8M15 18c4 1.2 4-2.2 6-2.8M12 3a6 6 0 0 0-6 6c0 5 6 12 6 12s6-7 6-12a6 6 0 0 0-6-6Z"/><circle cx="12" cy="9" r="2.2"/></svg>
+        </span>
+        <h3>Open Source Core</h3>
+        <p>Every tool we ship is public. The scheduler, badge system, judging pipeline and this very site are open-sourced under MIT — built by students, for students.</p>
+        <ul class="card__tags mono"><li>MIT</li><li>github</li></ul>
+      </article>
+
+      <article class="card card--feature reveal" data-delay="3" data-tilt>
+        <span class="card__num mono">04</span>
+        <span class="card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2.5 4 13.5h7l-1 8 9-11h-7z"/></svg>
+        </span>
+        <h3>72-Hour Build</h3>
+        <p>Hardware, cloud credits and mentors on tap so a four-person team can go from a blank repo to a working prototype before the deadline bell.</p>
+        <ul class="card__tags mono"><li>credits</li><li>mentors</li></ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ DOMAINS ══════════════════ -->
+<section class="section section--alt" id="domains">
+  <div class="container">
+    <header class="sec-head">
+      <p class="sec-head__index mono">02 <span>//</span> DOMAINS</p>
+      <h2 class="sec-head__title" data-glitch="PICK YOUR TRACK">PICK YOUR TRACK</h2>
+      <p class="sec-head__sub">Eight disciplines, one grid. Each domain runs its own challenge, its own jury and its own prize pool.</p>
+    </header>
+
+    <div class="domains" data-reveal-group>
+      <article class="domain reveal" data-delay="0" data-tilt>
+        <span class="domain__idx mono">D-01</span>
+        <h3>Web Development</h3>
+        <p>Ship production-grade interfaces, APIs and realtime systems under a 36-hour sprint.</p>
+        <span class="domain__meta mono">42 events · ₹6L</span>
+      </article>
+      <article class="domain reveal" data-delay="1" data-tilt>
+        <span class="domain__idx mono">D-02</span>
+        <h3>AI &amp; Machine Learning</h3>
+        <p>Train, fine-tune and deploy models against real datasets with live leaderboard scoring.</p>
+        <span class="domain__meta mono">31 events · ₹8L</span>
+      </article>
+      <article class="domain reveal" data-delay="2" data-tilt>
+        <span class="domain__idx mono">D-03</span>
+        <h3>Robotics &amp; Automation</h3>
+        <p>Autonomous bots, swarms and CV pipelines on the arena floor. Bring your own chassis.</p>
+        <span class="domain__meta mono">24 events · ₹7L</span>
+      </article>
+      <article class="domain reveal" data-delay="3" data-tilt>
+        <span class="domain__idx mono">D-04</span>
+        <h3>Cybersecurity</h3>
+        <p>Capture-the-flag, red-team simulation and hardware attacks against our own rigs.</p>
+        <span class="domain__meta mono">18 events · ₹4L</span>
+      </article>
+      <article class="domain reveal" data-delay="4" data-tilt>
+        <span class="domain__idx mono">D-05</span>
+        <h3>Game Development</h3>
+        <p>Unity and Unreal jams with a public showcase floor and a 72-hour game-jam arena.</p>
+        <span class="domain__meta mono">14 events · ₹3L</span>
+      </article>
+      <article class="domain reveal" data-delay="5" data-tilt>
+        <span class="domain__idx mono">D-06</span>
+        <h3>Design &amp; Creativity</h3>
+        <p>Brand systems, motion identity and product design judged by working studio leads.</p>
+        <span class="domain__meta mono">12 events · ₹2L</span>
+      </article>
+      <article class="domain reveal" data-delay="6" data-tilt>
+        <span class="domain__idx mono">D-07</span>
+        <h3>Marketing &amp; Media</h3>
+        <p>Campaigns, creator labs and a real-time social-ops war room run by the media team.</p>
+        <span class="domain__meta mono">16 events · ₹2L</span>
+      </article>
+      <article class="domain reveal" data-delay="7" data-tilt>
+        <span class="domain__idx mono">D-08</span>
+        <h3>Social Outreach</h3>
+        <p>Build for impact — accessibility, sustainability and civic-tech problems on the ground.</p>
+        <span class="domain__meta mono">11 events · ₹2L</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ STATS / CORE ══════════════════ -->
+<section class="core">
+  <div class="core__bg" aria-hidden="true">
+    <img src="assets/img/neural-core.webp" alt="" width="1200" height="800" loading="lazy" decoding="async" />
+  </div>
+  <div class="container core__inner">
+    <p class="core__eyebrow mono">// TELEMETRY</p>
+    <h2 class="core__title">A FESTIVAL THAT SCALES<br /><span>LIKE MACHINERY</span></h2>
+    <p class="core__text">Last edition closed with a 96% satisfaction score across 12,000 feedback responses. This year we doubled the hardware track, tripled the mentorship pool and cut registration to under four minutes.</p>
+    <ul class="core__list">
+      <li><span class="core__bar" style="--w:96%"></span><span class="core__barLabel mono">Satisfaction</span><span class="core__barVal mono">96%</span></li>
+      <li><span class="core__bar" style="--w:88%"></span><span class="core__barLabel mono">Return rate</span><span class="core__barVal mono">88%</span></li>
+      <li><span class="core__bar" style="--w:74%"></span><span class="core__barLabel mono">Mentor coverage</span><span class="core__barVal mono">74%</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════════════════ SCHEDULE ══════════════════ -->
+<section class="section" id="schedule">
+  <div class="container">
+    <header class="sec-head">
+      <p class="sec-head__index mono">03 <span>//</span> SCHEDULE</p>
+      <h2 class="sec-head__title" data-glitch="RUN OF SHOW">RUN OF SHOW</h2>
+      <p class="sec-head__sub">Four days, eight parallel tracks. Pick a day to load its manifest.</p>
+    </header>
+
+    <div class="tabs" role="tablist" aria-label="Festival days">
+      <button class="tab is-active" role="tab" id="tab-1" aria-selected="true" aria-controls="panel-1" data-tab="1"><span class="tab__day mono">DAY 01</span><span class="tab__date mono">19 FEB</span></button>
+      <button class="tab" role="tab" id="tab-2" aria-selected="false" aria-controls="panel-2" tabindex="-1" data-tab="2"><span class="tab__day mono">DAY 02</span><span class="tab__date mono">20 FEB</span></button>
+      <button class="tab" role="tab" id="tab-3" aria-selected="false" aria-controls="panel-3" tabindex="-1" data-tab="3"><span class="tab__day mono">DAY 03</span><span class="tab__date mono">21 FEB</span></button>
+      <button class="tab" role="tab" id="tab-4" aria-selected="false" aria-controls="panel-4" tabindex="-1" data-tab="4"><span class="tab__day mono">DAY 04</span><span class="tab__date mono">22 FEB</span></button>
+    </div>
+
+    <div class="panels">
+      <div class="panel is-active" role="tabpanel" id="panel-1" aria-labelledby="tab-1" tabindex="0">
+        <ol class="timeline">
+          <li class="tl reveal"><span class="tl__time mono">09:00</span><div class="tl__body"><h3>Opening Ceremony &amp; Neural Handshake</h3><p>Full auditorium broadcast with the chief guest keynote and the live reveal of the 2027 challenge slate.</p><span class="tag mono">Main Stage</span></div></li>
+          <li class="tl reveal"><span class="tl__time mono">11:00</span><div class="tl__body"><h3>Web Dev Sprint — Kickoff</h3><p>Thirty-six hours, production deploys, jury-scored against a live public leaderboard.</p><span class="tag mono">Web Development</span></div></li>
+          <li class="tl reveal"><span class="tl__time mono">14:30</span><div class="tl__body"><h3>Robotics Arena — Calibration</h3><p>Chassis bring-up, field calibration and a qualifying lap on the autonomous track.</p><span class="tag mono">Robotics</span></div></li>
+          <li class="tl reveal"><span class="tl__time mono">19:00</span><div class="tl__body"><h3>Cyborg Nights</h3><p>Open-air sets, laser mapping and the flagship after-hours social on the main quadrangle.</p><span class="tag mono">Social</span></div></li>
+        </ol>
+      </div>
+
+      <div class="panel" role="tabpanel" id="panel-2" aria-labelledby="tab-2" tabindex="0" hidden>
+        <ol class="timeline">
+          <li class="tl reveal"><span class="tl__time mono">10:00</span><div class="tl__body"><h3>AI Model Wars — Fine-tune Finale</h3><p>Teams present the model that beat the benchmark. Judges probe the training pipeline live on stage.</p><span class="tag mono">AI &amp; ML</span></div></li>
+          <li class="tl reveal"><span class="tl__time mono">13:00</span><div class="tl__body"><h3>CTF Grid — Round One</h3><p>Twelve hour capture-the-flag across three difficulty tiers with a red-team simulation in parallel.</p><span class="tag mono">Cybersecurity</span></div></li>
+          <li class="tl reveal"><span class="tl__time mono">16:00</span><div class="tl__body"><h3>Creator Lab: Volumetric Capture</h3><p>Hands-on session building a hologram-ready avatar pipeline for the closing showcase.</p><span class="tag mono">Media</span></div></li>
+          <li class="tl reveal"><span class="tl__time mono">20:00</span><div class="tl__body"><h3>Quiz: The Cyber Nexus</h3><p>Inter-college technical quiz with a live-on-stage buzzer system and audience relay rounds.</p><span class="tag mono">Creatives</span></div></li>
+        </ol>
+      </div>
+
+      <div class="panel" role="tabpanel" id="panel-3" aria-labelledby="tab-3" tabindex="0" hidden>
+        <ol class="timeline">
+          <li class="tl reveal"><span class="tl__time mono">09:30</span><div class="tl__body"><h3>Game Jam — Continuous Build</h3><p>Twenty-four hour jam with a public showcase floor, critic desks and live-streamed playtests.</p><span class="tag mono">Game Dev</span></div></li>
+          <li class="tl reveal"><span class="tl__time mono">12:00</span><div class="tl__body"><h3>Startup Bootcamp — Pitch Clinic</h3><p>Mentors tear apart fifteen pitches in fifteen minutes each. Recorded and published openly.</p><span class="tag mono">Startups</span></div></li>
+          <li class="tl reveal"><span class="tl__time mono">15:30</span><div class="tl__body"><h3>Quadrotor Swarm Trials</h3><p>Autonomous flight formation trials scored on precision, resilience and airframe design.</p><span class="tag mono">Robotics</span></div></li>
+          <li class="tl reveal"><span class="tl__time mono">18:30</span><div class="tl__body"><h3>Design Systems Teardown</h3><p>Live critique of a real product's design system, then a rebuild in under ninety minutes.</p><span class="tag mono">Design</span></div></li>
+        </ol>
+      </div>
+
+      <div class="panel" role="tabpanel" id="panel-4" aria-labelledby="tab-4" tabindex="0" hidden>
+        <ol class="timeline">
+          <li class="tl reveal"><span class="tl__time mono">10:00</span><div class="tl__body"><h3>Final Evaluations</h3><p>Every domain closes judging. Teams demo to their domain jury in parallel tracks.</p><span class="tag mono">All Domains</span></div></li>
+          <li class="tl reveal"><span class="tl__time mono">14:00</span><div class="tl__body"><h3>Grand Showcase</h3><p>Every finalist on one stage — builds, robots, models and games — in front of the full audience.</p><span class="tag mono">Main Stage</span></div></li>
+          <li class="tl reveal"><span class="tl__time mono">17:00</span><div class="tl__body"><h3>Closing Ceremony &amp; Awards</h3><p>₹40L distributed across eight domains, followed by the closing address and the 2028 handoff.</p><span class="tag mono">Main Stage</span></div></li>
+          <li class="tl reveal"><span class="tl__time mono">20:00</span><div class="tl__body"><h3>Afterglow</h3><p>The final night: an open jam floor, alumni mixer and the traditional campus send-off.</p><span class="tag mono">Social</span></div></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ SPEAKERS ══════════════════ -->
+<section class="section section--alt" id="speakers">
+  <div class="container">
+    <header class="sec-head">
+      <p class="sec-head__index mono">04 <span>//</span> SPEAKERS</p>
+      <h2 class="sec-head__title" data-glitch="VOICES FROM THE GRID">VOICES FROM THE GRID</h2>
+      <p class="sec-head__sub">Engineers, founders and researchers who ship. No keynote theatre — just working stories.</p>
+    </header>
+
+    <div class="speakers" data-reveal-group>
+      <article class="speaker reveal" data-delay="0" data-tilt>
+        <div class="speaker__frame">
+          <img src="assets/img/speaker-1.webp" alt="Portrait of Dr. Ananya Rao, principal research engineer in machine intelligence" width="680" height="680" loading="lazy" decoding="async" />
+          <span class="speaker__scan" aria-hidden="true"></span>
+          <span class="speaker__badge mono">KEYNOTE</span>
+        </div>
+        <div class="speaker__meta">
+          <h3>Dr. Ananya Rao</h3>
+          <p class="speaker__role mono">PRINCIPAL RESEARCH ENGINEER · SYNAPSE</p>
+          <p class="speaker__bio">Leads the team behind a 40B-parameter model that runs on consumer silicon. Speaks on efficient inference and why smaller models win.</p>
+        </div>
+      </article>
+
+      <article class="speaker reveal" data-delay="1" data-tilt>
+        <div class="speaker__frame">
+          <img src="assets/img/speaker-2.webp" alt="Portrait of Karthik Menon, founder of an autonomous systems startup" width="680" height="680" loading="lazy" decoding="async" />
+          <span class="speaker__scan" aria-hidden="true"></span>
+          <span class="speaker__badge mono">CLOSING</span>
+        </div>
+        <div class="speaker__meta">
+          <h3>Karthik Menon</h3>
+          <p class="speaker__role mono">FOUNDER · HALO AUTONOMY</p>
+          <p class="speaker__bio">Took a warehouse-robotics startup from a garage to three continents. Talks about the parts of hardware nobody posts about.</p>
+        </div>
+      </article>
+
+      <article class="speaker reveal" data-delay="2" data-tilt>
+        <div class="speaker__frame">
+          <img src="assets/img/speaker-3.webp" alt="Portrait of Nia Okafor, head of offensive security research" width="680" height="680" loading="lazy" decoding="async" />
+          <span class="speaker__scan" aria-hidden="true"></span>
+          <span class="speaker__badge mono">TALK</span>
+        </div>
+        <div class="speaker__meta">
+          <h3>Nia Okafor</h3>
+          <p class="speaker__role mono">HEAD OF OFFENSIVE SECURITY · NULLSECTOR</p>
+          <p class="speaker__bio">Runs red-team operations against banks and hospitals. Shows how a five-minute compromise actually unfolds, step by step.</p>
+        </div>
+      </article>
+
+      <article class="speaker reveal" data-delay="3" data-tilt>
+        <div class="speaker__frame">
+          <img src="assets/img/speaker-4.webp" alt="Portrait of Ren Takahashi, director of experience design" width="680" height="680" loading="lazy" decoding="async" />
+          <span class="speaker__scan" aria-hidden="true"></span>
+          <span class="speaker__badge mono">WORKSHOP</span>
+        </div>
+        <div class="speaker__meta">
+          <h3>Ren Takahashi</h3>
+          <p class="speaker__role mono">DIRECTOR OF EXPERIENCE DESIGN · KIRA</p>
+          <p class="speaker__bio">Built the interaction language for two billion devices. Teaches the interface craft behind interfaces you forget exist.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ SHOWCASE ══════════════════ -->
+<section class="section" id="showcase">
+  <div class="container">
+    <header class="sec-head">
+      <p class="sec-head__index mono">05 <span>//</span> SHOWCASE</p>
+      <h2 class="sec-head__title" data-glitch="BUILT IN THE OPEN">BUILT IN THE OPEN</h2>
+      <p class="sec-head__sub">Two floors, zero velvet ropes. Everything here is running live, not projected on a loop.</p>
+    </header>
+
+    <div class="showcase">
+      <figure class="scene reveal" data-delay="0">
+        <img src="assets/img/scene-hackathon.webp" alt="A vast hackathon arena filled with students at glowing workstations beneath a holographic wireframe brain" width="1600" height="900" loading="lazy" decoding="async" />
+        <figcaption>
+          <span class="scene__idx mono">ZONE 01</span>
+          <h3>The Build Floor</h3>
+          <p>1,200 seats, 400 live deployments, zero slide decks. Mentors on a roving floor with a fifteen-minute response SLA.</p>
+        </figcaption>
+      </figure>
+
+      <figure class="scene reveal" data-delay="1">
+        <img src="assets/img/scene-robotics.webp" alt="A humanoid robot with a glowing cyan core standing on a hexagonal competition platform" width="1600" height="900" loading="lazy" decoding="async" />
+        <figcaption>
+          <span class="scene__idx mono">ZONE 02</span>
+          <h3>The Arena</h3>
+          <p>Full-scale autonomous platforms run scored trials on a 22×14 m floor — bring your own chassis or borrow one of ours.</p>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ TESTIMONIALS ══════════════════ -->
+<section class="section section--alt" id="voices">
+  <div class="container">
+    <header class="sec-head">
+      <p class="sec-head__index mono">06 <span>//</span> SIGNAL LOG</p>
+      <h2 class="sec-head__title" data-glitch="FROM THE FEEDBACK">FROM THE FEEDBACK</h2>
+      <p class="sec-head__sub">Unedited notes left by participants at the close of the last edition.</p>
+    </header>
+
+    <div class="voices" data-reveal-group>
+      <blockquote class="voice reveal" data-delay="0">
+        <p class="voice__body">“I came in with a weekend project and left with a funded company. The mentor response time is the real superpower — someone always answered.”</p>
+        <div class="voice__meta"><span class="voice__who">A. Fernandes</span><span class="voice__what mono">WINNER · ROBOTICS 2026</span></div>
+      </blockquote>
+      <blockquote class="voice reveal" data-delay="1">
+        <p class="voice__body">“The judges actually read our code. Nobody has ever done that at a college fest. We changed our whole architecture because of the feedback.”</p>
+        <div class="voice__meta"><span class="voice__who">S. Iyer</span><span class="voice__what mono">TEAM NULLPTR · AI</span></div>
+      </blockquote>
+      <blockquote class="voice reveal" data-delay="2">
+        <p class="voice__body">“As a first-year student I got a mentor, a hardware kit and a talk slot in four days. The scale is absurd in the best way.”</p>
+        <div class="voice__meta"><span class="voice__who">M. Tanaka</span><span class="voice__what mono">FIRST-YEAR · WEB DEV</span></div>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ FAQ ══════════════════ -->
+<section class="section" id="faq">
+  <div class="container container--narrow">
+    <header class="sec-head">
+      <p class="sec-head__index mono">07 <span>//</span> FAQ</p>
+      <h2 class="sec-head__title" data-glitch="FREQUENT QUERIES">FREQUENT QUERIES</h2>
+      <p class="sec-head__sub">Everything you need before you plug in.</p>
+    </header>
+
+    <div class="faq" data-reveal-group>
+      <details class="faq__item reveal" data-delay="0" open>
+        <summary><span class="faq__q">Who can participate in Techfest 3.0?</span><span class="faq__icon" aria-hidden="true"></span></summary>
+        <div class="faq__a"><p>Any student — undergrad, postgrad or school — can register. Industry professionals, alumni and international guests join as mentors, judges and speakers. Most competitive tracks require a valid student ID at check-in.</p></div>
+      </details>
+      <details class="faq__item reveal" data-delay="1">
+        <summary><span class="faq__q">Do I need to be part of a team to enter?</span><span class="faq__icon" aria-hidden="true"></span></summary>
+        <div class="faq__a"><p>Individual entries are welcome for talks, workshops and exhibitions. Hacker-style tracks run as teams of two to four, and our matchmaking board pairs solo registrants within the first week.</p></div>
+      </details>
+      <details class="faq__item reveal" data-delay="2">
+        <summary><span class="faq__q">Is there a registration fee?</span><span class="faq__icon" aria-hidden="true"></span></summary>
+        <div class="faq__a"><p>Student passes are free for all IIT Bombay students and ₹499 for others, covering every track, all meals and the closing showcase. Workshop seats are limited and released in a second wave.</p></div>
+      </details>
+      <details class="faq__item reveal" data-delay="3">
+        <summary><span class="faq__q">What hardware or software should I bring?</span><span class="faq__icon" aria-hidden="true"></span></summary>
+        <div class="faq__a"><p>Bring a laptop, a charger and your own tools. Loaner hardware — microcontrollers, sensor kits, VR headsets and FPGA boards — is available at the issue desk on a first-come basis. Robotics teams should declare their chassis requirements by 5 February.</p></div>
+      </details>
+      <details class="faq__item reveal" data-delay="4">
+        <summary><span class="faq__q">Where does the festival happen?</span><span class="faq__icon" aria-hidden="true"></span></summary>
+        <div class="faq__a"><p>Across the IIT Bombay campus in Powai — the Main Stage in the Convocation Hall, the Build Floor in the SAC arena, the Arena in the quadruped shed, and workshops in the lab complexes. The venue is fully wheelchair accessible.</p></div>
+      </details>
+      <details class="faq__item reveal" data-delay="5">
+        <summary><span class="faq__q">Will sessions be recorded or streamed?</span><span class="faq__icon" aria-hidden="true"></span></summary>
+        <div class="faq__a"><p>Keynotes and the closing ceremony stream live to our channels. Recorded talks land on the open archive within two weeks, under a Creative Commons licence. Workshops stay in-person only.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ REGISTER ══════════════════ -->
+<section class="register" id="register">
+  <div class="register__grid" aria-hidden="true"></div>
+  <div class="container register__inner">
+    <div class="register__copy">
+      <p class="sec-head__index mono">08 <span>//</span> REGISTRATION</p>
+      <h2 class="register__title" data-glitch="CLAIM YOUR PASS">CLAIM YOUR PASS</h2>
+      <p class="register__text">Drop your details and the ops team will send your attendee uplink within 24 hours. Priority waves go out first — the form below is the fastest way in.</p>
+      <ul class="register__points mono">
+        <li><span>▸</span> Instant digital pass with QR credential</li>
+        <li><span>▸</span> Early access to workshop slots</li>
+        <li><span>▸</span> Matchmaking before the doors open</li>
+      </ul>
+    </div>
+
+    <form class="form" id="regForm" novalidate>
+      <div class="form__head mono">
+        <span>ENROLLMENT_TERMINAL</span>
+        <span class="form__status" id="formStatus">IDLE</span>
+      </div>
+
+      <div class="form__row">
+        <label class="field">
+          <span class="field__label mono">OPERATIVE NAME</span>
+          <input type="text" name="name" id="fName" placeholder="Ada Lovelace" autocomplete="name" required />
+          <span class="field__err mono" data-err="name"></span>
+        </label>
+        <label class="field">
+          <span class="field__label mono">UPLINK ADDRESS</span>
+          <input type="email" name="email" id="fEmail" placeholder="you@domain.com" autocomplete="email" required />
+          <span class="field__err mono" data-err="email"></span>
+        </label>
+      </div>
+
+      <label class="field">
+        <span class="field__label mono">INSTITUTE / ORGANISATION</span>
+        <input type="text" name="org" id="fOrg" placeholder="IIT Bombay" autocomplete="organization" />
+        <span class="field__err mono" data-err="org"></span>
+      </label>
+
+      <label class="field">
+        <span class="field__label mono">PRIMARY DOMAIN</span>
+        <span class="select">
+          <select name="domain" id="fDomain" required>
+            <option value="">Select a track…</option>
+            <option>Web Development</option>
+            <option>AI &amp; Machine Learning</option>
+            <option>Robotics &amp; Automation</option>
+            <option>Cybersecurity</option>
+            <option>Game Development</option>
+            <option>Design &amp; Creativity</option>
+            <option>Marketing &amp; Media</option>
+            <option>Social Outreach</option>
+          </select>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </span>
+        <span class="field__err mono" data-err="domain"></span>
+      </label>
+
+      <button class="btn btn--primary btn--block magnetic" type="submit" id="submitBtn">
+        <span class="btn__label">Initiate uplink</span>
+        <span class="btn__glitch" aria-hidden="true" data-text="Initiate uplink">Initiate uplink</span>
+        <span class="btn__arrow" aria-hidden="true">→</span>
+      </button>
+
+      <p class="form__note mono">By registering you accept the code of conduct. No spam — only transmissions about the festival.</p>
+      <pre class="form__out mono" id="formOut" hidden></pre>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<!-- ══════════════════ FOOTER ══════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <a class="logo logo--footer" href="#top" aria-label="Techfest 3.0 — home">
+          <span class="logo__mark" aria-hidden="true">
+            <svg viewBox="0 0 64 64">
+              <path class="logo__hex" d="M32 3 58 17v30L32 61 6 47V17z" fill="none" stroke="currentColor" stroke-width="2"/>
+              <path class="logo__hex2" d="M32 13 49 22v20L32 51 15 42V22z" fill="none" stroke="currentColor" stroke-width="1" opacity=".35"/>
+              <path class="logo__t" d="M21 24h22M32 24v19" stroke="currentColor" stroke-width="4" stroke-linecap="square"/>
+              <circle class="logo__node" cx="32" cy="24" r="2.6" fill="var(--magenta)"/>
+            </svg>
+          </span>
+          <span class="logo__text">
+            <strong>TECHFEST</strong>
+            <em>3.0 &middot; IIT BOMBAY</em>
+          </span>
+        </a>
+        <p>India's largest student innovation festival, rewired for a new era. Built by students, for students.</p>
+        <p class="footer__addr mono">SAC BUILDING, IIT BOMBAY<br />POWAI, MUMBAI 400076</p>
+      </div>
+
+      <nav class="footer__cols" aria-label="Footer">
+        <div class="footer__col">
+          <h4 class="mono">EXPLORE</h4>
+          <ul>
+            <li><a href="#protocol">Protocol</a></li>
+            <li><a href="#domains">Domains</a></li>
+            <li><a href="#schedule">Schedule</a></li>
+            <li><a href="#speakers">Speakers</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4 class="mono">PARTICIPATE</h4>
+          <ul>
+            <li><a href="#register">Register</a></li>
+            <li><a href="#showcase">Showcase</a></li>
+            <li><a href="#voices">Feedback</a></li>
+            <li><a href="#faq">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4 class="mono">REACH US</h4>
+          <ul>
+            <li><a href="mailto:hello@techfest.in">hello@techfest.in</a></li>
+            <li><a href="mailto:press@techfest.in">press@techfest.in</a></li>
+            <li><a href="mailto:sponsors@techfest.in">sponsors@techfest.in</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <div class="footer__word" aria-hidden="true"><span>TECHFEST</span></div>
+
+    <div class="footer__bottom">
+      <p class="mono">© 2027 TECHFEST 3.0 · IIT BOMBAY</p>
+      <ul class="footer__social">
+        <li><a href="#" aria-label="Techfest on X"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23.2 22h-6.3l-4.9-6.4L6.4 22H3.3l7.3-8.3L1.2 2h6.4l4.4 5.9L18.9 2Zm-1.1 18h1.7L7.3 3.9H5.5L17.8 20Z"/></svg></a></li>
+        <li><a href="#" aria-label="Techfest on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor" stroke="none"/></svg></a></li>
+        <li><a href="#" aria-label="Techfest on LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5A2.5 2.5 0 1 0 5 8.5a2.5 2.5 0 0 0 0-5ZM3 9.5h4V21H3V9.5Zm6.5 0h3.8v1.6h.06c.53-.95 1.83-1.95 3.77-1.95C21.2 9.15 22 11.6 22 15v6h-4v-5.3c0-1.27-.02-2.9-1.8-2.9-1.8 0-2.07 1.38-2.07 2.8V21h-4V9.5Z"/></svg></a></li>
+        <li><a href="#" aria-label="Techfest on GitHub"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.35 1.09 2.92.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg></a></li>
+      </ul>
+      <p class="mono footer__credit">DESIGNED &amp; BUILT BY THE TECHFEST WEB TEAM</p>
+    </div>
+  </div>
+</footer>
+
+<button class="to-top" id="toTop" type="button" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+</button>
+
+<script src="js/main.js" defer></script>
+</body>
+</html>

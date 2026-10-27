@@ -1,0 +1,20 @@
+# Node
+node_modules/
+npm-debug.log*
+
+# Raw, unoptimised source artwork (regenerate with tools/optimize-images.sh)
+assets/img/_src/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Local artifacts
+*.log
+.DS_Store
+
+# Local QA artifacts
+.shots/
