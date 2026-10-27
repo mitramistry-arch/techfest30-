@@ -16,9 +16,17 @@ cyberpunk HUD aesthetic.
 
 | | |
 |---|---|
-| **Live site** | <https://mitramistry-arch.github.io/techfest30-/> |
 | **Source** | <https://github.com/mitramistry-arch/techfest30-> |
+| **Pull request** | <https://github.com/mitramistry-arch/techfest30-/pull/1> |
+| **Live site** | <https://mitramistry-arch.github.io/techfest30-/> &nbsp;_(see note below)_ |
 | **Demo recording** | _add your Google Drive link here (viewer access enabled)_ |
+
+> **Note on the live site.** GitHub Pages has to be switched on for this repository before
+> the first deploy can succeed: **Settings → Pages → Source → *GitHub Actions***.
+> A repo admin needs to flip that once; after that `.github/workflows/pages.yml` publishes
+> every push to `main` automatically. The site is a plain static bundle, so it also runs
+> from any static host (Netlify, Vercel, Cloudflare Pages, `python3 -m http.server`) with
+> no configuration at all.
 
 > **Submitting this task:** the form on the Techfest portal asks for a *GitHub link* and a
 > *Google Drive link to a short demo recording with viewer access enabled*. Paste the two
