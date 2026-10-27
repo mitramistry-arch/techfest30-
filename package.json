@@ -1,0 +1,17 @@
+{
+  "name": "techfest30-cyborg-landing",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cyborg-themed landing page for Techfest 3.0, IIT Bombay — a dependency-free static site.",
+  "license": "MIT",
+  "scripts": {
+    "start": "python3 -m http.server 4173",
+    "serve": "npx serve -l 4173",
+    "qa": "node tools/interact.js",
+    "shots": "node tools/shoot.js",
+    "images": "./tools/optimize-images.sh"
+  },
+  "devDependencies": {
+    "playwright": "^1.64.1"
+  }
+}
