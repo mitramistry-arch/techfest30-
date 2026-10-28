@@ -9,6 +9,8 @@ permissions:
   contents: read
   pages: write
   id-token: write
+  # Needed for the enablement step above to create the Pages site.
+  administration: write
 
 concurrency:
   group: pages
