@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>ENTER THE CORE — Techfest 3.0 | IIT Bombay</title>
+<meta name="description" content="A 3D interactive experience for Techfest 3.0, IIT Bombay. Scroll through a live reactor core, inspect all eight domains in three dimensions, and claim your pass." />
+<meta name="theme-color" content="#03050a" />
+<meta name="color-scheme" content="dark" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="ENTER THE CORE — Techfest 3.0" />
+<meta property="og:description" content="A 3D interactive experience for Techfest 3.0, IIT Bombay." />
+<meta property="og:image" content="../assets/img/neural-core.webp" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M32 3 58 17v30L32 61 6 47V17z' fill='none' stroke='%2300f0ff' stroke-width='3'/%3E%3Cpath d='M20 22h24M32 22v22' stroke='%23ff2d95' stroke-width='5' stroke-linecap='square'/%3E%3C/svg%3E" />
+<link rel="preload" href="../assets/fonts/orbitron-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="../assets/fonts/space-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="css/site.css" />
+</head>
+<body>
+
+<!-- ═══════════ WEBGL SURFACE ═══════════ -->
+<canvas id="scene" aria-label="Three-dimensional rendering of the Techfest 3.0 core" role="img"></canvas>
+<div id="fx" aria-hidden="true">
+  <div class="fx__vignette"></div>
+  <div class="fx__scan"></div>
+  <div class="fx__grain"></div>
+</div>
+<div id="reticle" aria-hidden="true"><span></span><span></span></div>
+
+<!-- ═══════════ LOADER ═══════════ -->
+<div id="loader" role="status" aria-live="polite">
+  <div class="loader__inner">
+    <div class="loader__mark" aria-hidden="true">
+      <svg viewBox="0 0 64 64">
+        <path d="M32 3 58 17v30L32 61 6 47V17z" fill="none" stroke="currentColor" stroke-width="1.6" opacity=".5"/>
+        <path d="M32 13 49 22v20L32 51 15 42V22z" fill="none" stroke="currentColor" stroke-width="1" opacity=".28"/>
+        <path d="M21 24h22M32 24v19" stroke="currentColor" stroke-width="4" stroke-linecap="square"/>
+      </svg>
+    </div>
+    <p class="loader__title">ENTER THE CORE</p>
+    <div class="loader__bar"><span id="loaderBar"></span></div>
+    <p class="loader__status mono" id="loaderStatus">INITIALISING</p>
+  </div>
+</div>
+
+<!-- ═══════════ INTRO ═══════════ -->
+<div id="intro">
+  <div class="intro__grid" aria-hidden="true"></div>
+  <div class="intro__inner">
+    <p class="intro__eyebrow mono"><span class="dot" aria-hidden="true"></span>TECHFEST 3.0 · IIT BOMBAY · 19—22 FEB 2027</p>
+    <h1 class="intro__title">
+      <span class="intro__l1">ENTER</span>
+      <span class="intro__l2">THE <em>CORE</em></span>
+    </h1>
+    <p class="intro__sub">Eight domains orbit one machine. Scroll to descend through it.</p>
+    <p class="intro__hint mono" aria-hidden="true"><span class="intro__arrow">↓</span> SCROLL TO DESCEND</p>
+  </div>
+</div>
+
+<!-- ═══════════ HUD ═══════════ -->
+<header id="hud">
+  <a class="brand" href="#content" aria-label="Techfest 3.0 — skip to content">
+    <span class="brand__mark" aria-hidden="true">
+      <svg viewBox="0 0 64 64">
+        <path d="M32 3 58 17v30L32 61 6 47V17z" fill="none" stroke="currentColor" stroke-width="2" opacity=".7"/>
+        <path d="M32 13 49 22v20L32 51 15 42V22z" fill="none" stroke="currentColor" stroke-width="1" opacity=".3"/>
+        <path d="M21 24h22M32 24v19" stroke="currentColor" stroke-width="4" stroke-linecap="square"/>
+      </svg>
+    </span>
+    <span class="brand__text"><strong>TECHFEST</strong><em>3.0 · CORE</em></span>
+  </a>
+
+  <div class="hud__mid">
+    <div id="chapterReadout" class="chapterReadout"></div>
+  </div>
+
+  <div class="hud__right">
+    <div class="progress" aria-hidden="true">
+      <span class="progress__fill" id="progressFill"></span>
+    </div>
+    <span class="progress__pct mono" id="progressPct">000</span>
+    <a class="hud__cta" href="#register">GET PASSES</a>
+  </div>
+</header>
+
+<!-- ═══════════ PROJECTED 3D LABELS ═══════════ -->
+<div id="labels" aria-hidden="false"></div>
+
+<!-- ═══════════ CORE CALL-TO-ACTION (chapter 04) ═══════════ -->
+<button id="coreCta" type="button" hidden>
+  <span class="coreCta__ring" aria-hidden="true"></span>
+  <span class="coreCta__label">CLICK THE CORE TO UPLINK</span>
+</button>
+
+<!-- ═══════════ CHAPTER NAV ═══════════ -->
+<nav id="chapterNav" aria-label="Chapters"></nav>
+
+<!-- ═══════════ CHAPTER CARD ═══════════ -->
+<div id="chapterCard" aria-live="polite">
+  <p class="chapterCard__kicker mono" id="chapterKicker"></p>
+  <h2 class="chapterCard__title" id="chapterTitle"></h2>
+  <p class="chapterCard__body" id="chapterBody"></p>
+</div>
+
+<!-- ═══════════ SIDE PANEL ═══════════ -->
+<aside id="panel" aria-hidden="true" aria-label="Domain detail"></aside>
+
+<!-- ═══════════ SCROLL TRACK (drives the camera) ═══════════ -->
+<div id="scrollTrack" aria-hidden="true"></div>
+
+<!-- ═══════════ READABLE CONTENT ═══════════ -->
+<main id="content">
+
+  <section class="band band--stats" id="stats">
+    <div class="wrap">
+      <header class="band__head">
+        <p class="band__index mono">01 <span>//</span> TELEMETRY</p>
+        <h2 class="band__title">THE NUMBERS</h2>
+        <p class="band__sub">What four days of the core actually looks like at scale.</p>
+      </header>
+      <div class="statGrid">
+        <div class="statCell"><span class="statCell__n" data-count="120" data-suffix="+">0</span><span class="statCell__l mono">Events</span><span class="statCell__d">across eight domains</span></div>
+        <div class="statCell"><span class="statCell__n" data-count="60" data-suffix="+">0</span><span class="statCell__l mono">Teams</span><span class="statCell__d">from 300+ colleges</span></div>
+        <div class="statCell"><span class="statCell__n" data-count="25" data-suffix="K">0</span><span class="statCell__l mono">Footfall</span><span class="statCell__d">four days, one campus</span></div>
+        <div class="statCell"><span class="statCell__n" data-count="40" data-prefix="₹" data-suffix="L">0</span><span class="statCell__l mono">Prize pool</span><span class="statCell__d">paid out on stage</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--domains" id="domains2d">
+    <div class="wrap">
+      <header class="band__head">
+        <p class="band__index mono">02 <span>//</span> DOMAINS</p>
+        <h2 class="band__title">THE EIGHT</h2>
+        <p class="band__sub">These are the same eight monoliths you flew past above — every one of them has a room, a jury and a prize pool.</p>
+      </header>
+      <ul id="domainList" class="domainList"></ul>
+    </div>
+  </section>
+
+  <section class="band band--schedule" id="schedule">
+    <div class="wrap">
+      <header class="band__head">
+        <p class="band__index mono">03 <span>//</span> RUN OF SHOW</p>
+        <h2 class="band__title">FOUR DAYS</h2>
+        <p class="band__sub">Pick a day to load its manifest.</p>
+      </header>
+      <div class="coreTabs" id="coreTabs" role="tablist" aria-label="Festival days"></div>
+      <div class="corePanels" id="corePanels"></div>
+    </div>
+  </section>
+
+  <section class="band band--speakers" id="speakers2d">
+    <div class="wrap">
+      <header class="band__head">
+        <p class="band__index mono">04 <span>//</span> SPEAKERS</p>
+        <h2 class="band__title">VOICES</h2>
+        <p class="band__sub">Engineers, founders and researchers who ship.</p>
+      </header>
+      <div id="coreSpeakers" class="spkGrid"></div>
+    </div>
+  </section>
+
+  <section class="band band--register" id="register">
+    <div class="wrap register__grid2">
+      <div class="register__copy">
+        <p class="band__index mono">05 <span>//</span> REGISTRATION</p>
+        <h2 class="band__title">CLAIM YOUR PASS</h2>
+        <p class="band__sub">Drop your details and the ops team will send your attendee uplink within 24 hours. Priority waves go out first.</p>
+        <ul class="register__points mono">
+          <li><span>▸</span> Instant digital pass with QR credential</li>
+          <li><span>▸</span> Early access to workshop slots</li>
+          <li><span>▸</span> Matchmaking before the doors open</li>
+        </ul>
+        <div class="countdown" data-countdown>
+          <p class="countdown__label mono">TRANSMISSION BEGINS IN</p>
+          <div class="countdown__units">
+            <div class="countdown__unit"><span class="countdown__num" data-unit="days">--</span><span class="countdown__cap mono">Days</span></div>
+            <div class="countdown__unit"><span class="countdown__num" data-unit="hours">--</span><span class="countdown__cap mono">Hrs</span></div>
+            <div class="countdown__unit"><span class="countdown__num" data-unit="minutes">--</span><span class="countdown__cap mono">Min</span></div>
+            <div class="countdown__unit"><span class="countdown__num" data-unit="seconds">--</span><span class="countdown__cap mono">Sec</span></div>
+          </div>
+        </div>
+      </div>
+
+      <form class="coreForm" id="coreForm" novalidate>
+        <div class="coreForm__head mono"><span>ENROLLMENT_TERMINAL</span><span id="coreFormStatus">IDLE</span></div>
+
+        <div class="coreForm__row">
+          <label class="field">
+            <span class="field__label mono">OPERATIVE NAME</span>
+            <input type="text" name="name" placeholder="Ada Lovelace" autocomplete="name" required />
+            <span class="field__err mono" data-err="name"></span>
+          </label>
+          <label class="field">
+            <span class="field__label mono">UPLINK ADDRESS</span>
+            <input type="email" name="email" placeholder="you@domain.com" autocomplete="email" required />
+            <span class="field__err mono" data-err="email"></span>
+          </label>
+        </div>
+
+        <label class="field">
+          <span class="field__label mono">PRIMARY DOMAIN</span>
+          <span class="select">
+            <select name="domain" required>
+              <option value="">Select a track…</option>
+              <option>Web Development</option>
+              <option>AI &amp; Machine Learning</option>
+              <option>Robotics &amp; Automation</option>
+              <option>Cybersecurity</option>
+              <option>Game Development</option>
+              <option>Design &amp; Creativity</option>
+              <option>Marketing &amp; Media</option>
+              <option>Social Outreach</option>
+            </select>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
+          <span class="field__err mono" data-err="domain"></span>
+        </label>
+
+        <button class="cbtn" type="submit">
+          <span class="cbtn__label">Initiate uplink</span>
+          <span class="cbtn__arrow" aria-hidden="true">→</span>
+        </button>
+        <pre class="coreForm__out mono" id="coreFormOut" hidden></pre>
+        <p class="coreForm__note mono">No spam — only transmissions about the festival.</p>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer class="cfoot">
+  <div class="wrap">
+    <div class="cfoot__top">
+      <div>
+        <p class="cfoot__brand">TECHFEST <span>3.0</span></p>
+        <p class="cfoot__addr mono">SAC BUILDING, IIT BOMBAY · POWAI, MUMBAI 400076</p>
+      </div>
+      <ul class="cfoot__links">
+        <li><a href="#stats">Telemetry</a></li>
+        <li><a href="#domains2d">Domains</a></li>
+        <li><a href="#schedule">Schedule</a></li>
+        <li><a href="#register">Register</a></li>
+        <li><a href="../index.html">Task 1 — Cyborg Landing ↗</a></li>
+      </ul>
+    </div>
+    <div class="cfoot__word" aria-hidden="true">CORE</div>
+    <p class="cfoot__legal mono">© 2027 TECHFEST 3.0 · IIT BOMBAY · BUILT WITH THREE.JS</p>
+  </div>
+</footer>
+
+<script type="module" src="js/core-site.js"></script>
+</body>
+</html>
