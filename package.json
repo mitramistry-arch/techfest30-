@@ -2,16 +2,22 @@
   "name": "techfest30-cyborg-landing",
   "version": "1.0.0",
   "private": true,
-  "description": "Cyborg-themed landing page for Techfest 3.0, IIT Bombay — a dependency-free static site.",
+  "description": "Techfest 3.0, IIT Bombay — a cyborg-themed landing page plus a Three.js “Build in 3D” interactive experience. Static, dependency-free at runtime.",
   "license": "MIT",
   "scripts": {
     "start": "python3 -m http.server 4173",
     "serve": "npx serve -l 4173",
+    "build:3d": "esbuild 3d/src/main.js --bundle --format=esm --minify --target=es2020 --legal-comments=none --outfile=3d/js/core-site.js",
     "qa": "node tools/interact.js",
+    "qa:3d": "node tools/interact3d.js",
     "shots": "node tools/shoot.js",
+    "shots:3d": "node tools/shoot3d.js",
     "images": "./tools/optimize-images.sh"
   },
   "devDependencies": {
-    "playwright": "^1.64.1"
+    "@sparticuz/chromium": "^153.0.0",
+    "esbuild": "^0.28.2",
+    "playwright": "^1.64.1",
+    "three": "^0.186.1"
   }
 }
