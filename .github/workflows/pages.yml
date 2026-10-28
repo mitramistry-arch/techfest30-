@@ -32,23 +32,26 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
         run: |
-          set -x
-          for METHOD in POST PUT; do
-            echo "--- attempt $METHOD /repos/$REPO/pages ---"
-            curl -sS -o /tmp/pages.json -w 'HTTP %{http_code}\n' \
-              -X $METHOD \
+          {
+            for METHOD in POST PUT; do
+              echo "### $METHOD /repos/$REPO/pages"
+              curl -sS -w '\nHTTP %{http_code}\n' \
+                -X $METHOD \
+                -H "Authorization: Bearer $GH_TOKEN" \
+                -H "Accept: application/vnd.github+json" \
+                -H "X-GitHub-Api-Version: 2022-11-28" \
+                "https://api.github.com/repos/$REPO/pages" \
+                -d '{"build_type":"workflow"}'
+              echo ""
+            done
+            echo "### GET /repos/$REPO/pages"
+            curl -sS -w '\nHTTP %{http_code}\n' \
               -H "Authorization: Bearer $GH_TOKEN" \
               -H "Accept: application/vnd.github+json" \
               -H "X-GitHub-Api-Version: 2022-11-28" \
-              "https://api.github.com/repos/$REPO/pages" \
-              -d '{"build_type":"workflow"}' || true
-            cat /tmp/pages.json; echo
-          done
-          curl -sS -w '\nHTTP %{http_code}\n' \
-            -H "Authorization: Bearer $GH_TOKEN" \
-            -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            "https://api.github.com/repos/$REPO/pages"
+              "https://api.github.com/repos/$REPO/pages"
+          } > pages-diag.txt 2>&1 || true
+          cat pages-diag.txt
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -68,3 +71,18 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      # Job logs are only readable inside GitHub, so mirror the enablement
+      # diagnostics onto a scratch branch.
+      - name: Record diagnostics
+        if: always()
+        permissions:
+          contents: write
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B pages-diagnostics
+          test -f pages-diag.txt || echo "no diagnostics captured" > pages-diag.txt
+          git add pages-diag.txt
+          git commit -m "chore: pages enablement diagnostics" || echo "nothing to commit"
+          git push origin pages-diagnostics --force
