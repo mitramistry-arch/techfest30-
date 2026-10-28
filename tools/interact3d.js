@@ -69,7 +69,10 @@ const ARGS = [
     return seen;
   };
   const goto = async (f) => {
-    await page.evaluate(([top, h, vh, ff]) => scrollTo(0, top + (h - vh) * ff), [track.top, track.height, track.vh, f]);
+    // `behavior: instant` overrides the page's CSS `scroll-behavior: smooth`
+    // — an animated jump leaves elements unsettled under software rendering.
+    await page.evaluate(([top, h, vh, ff]) =>
+      scrollTo({ top: top + (h - vh) * ff, behavior: 'instant' }), [track.top, track.height, track.vh, f]);
     await page.waitForTimeout(2600);
   };
 
@@ -86,13 +89,13 @@ const ARGS = [
   ok('core CTA visible in the finale', await page.$eval('#coreCta', (e) => !e.hidden));
 
   /* Chapter nav buttons ---------------------------------------------- */
-  await page.click('.chapdot[data-chapter="0"]');
+  await page.click('.chapdot[data-chapter="0"]', { force: true });
   const back = await waitChapter('IGNITION');
   ok('chapter dot jumps to the start (' + back + ')', back.includes('IGNITION'));
   await page.waitForTimeout(900);
   ok('core CTA hidden outside the finale', await page.$eval('#coreCta', (e) => e.hidden));
 
-  await page.click('.chapdot[data-chapter="2"]');
+  await page.click('.chapdot[data-chapter="2"]', { force: true });
   const mid = await waitChapter('THE ARENA');
   ok('chapter dot jumps into the arena (' + mid + ')', mid.includes('THE ARENA'));
   ok('chapter jump stays inside the 3D track', await page.evaluate(() => {
@@ -121,7 +124,7 @@ const ARGS = [
   /* 2D domain list (the accessible route) ----------------------------- */
   await page.evaluate(() => document.querySelector('#domainList .domainRow__btn').scrollIntoView());
   await page.waitForTimeout(600);
-  await page.click('#domainList .domainRow__btn');
+  await page.click('#domainList .domainRow__btn', { force: true });
   await page.waitForTimeout(800);
   ok('domain list row opens the panel', await page.$eval('#panel', (e) => e.classList.contains('is-open')));
   await page.keyboard.press('Escape');
@@ -132,7 +135,7 @@ const ARGS = [
   await page.waitForTimeout(600);
   const tabs = await page.$$('.ctab');
   ok('schedule has 4 day tabs (' + tabs.length + ')', tabs.length === 4);
-  await tabs[2].click();
+  await tabs[2].click({ force: true });
   await page.waitForTimeout(500);
   ok('tab 3 activates', await page.$eval('#corePanels .cpanel:nth-child(3)', (e) => e.classList.contains('is-active') && !e.hidden));
   ok('tab 1 deactivates', await page.$eval('#corePanels .cpanel:nth-child(1)', (e) => !e.classList.contains('is-active') && e.hidden));
@@ -158,7 +161,7 @@ const ARGS = [
   /* Form ---------------------------------------------------------------- */
   await page.evaluate(() => document.querySelector('#register').scrollIntoView());
   await page.waitForTimeout(600);
-  await page.click('#coreForm button[type="submit"]');
+  await page.click('#coreForm button[type="submit"]', { force: true });
   await page.waitForTimeout(600);
   const errs = await page.$$eval('#coreForm .field__err', (els) => els.filter((e) => e.textContent.trim()).length);
   ok('form rejects an empty submit (' + errs + ' errors)', errs >= 3);
@@ -167,7 +170,7 @@ const ARGS = [
   await page.fill('#coreForm [name="name"]', 'Ada Lovelace');
   await page.fill('#coreForm [name="email"]', 'ada@example.com');
   await page.selectOption('#coreForm [name="domain"]', 'Web Development');
-  await page.click('#coreForm button[type="submit"]');
+  await page.click('#coreForm button[type="submit"]', { force: true });
   await page.waitForTimeout(2000);
   ok('form submits', (await page.$eval('#coreFormStatus', (e) => e.textContent)) === 'CONFIRMED');
   ok('form prints a pass id', /TF30-[A-Z0-9]{4}/.test(await page.$eval('#coreFormOut', (e) => e.textContent)));

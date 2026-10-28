@@ -21,6 +21,7 @@ Techfest, IIT Bombay · 19–22 February 2027
 | **Path** | `/` | `/3d/` |
 | **Pull request** | <https://github.com/mitramistry-arch/techfest30-/pull/1> | see the repo's PR list |
 | **Live site** | <https://mitramistry-arch.github.io/techfest30-/> &nbsp;_(see note)_ | <https://mitramistry-arch.github.io/techfest30-/3d/> |
+| **Mirror (works today)** | <https://cdn.jsdelivr.net/gh/mitramistry-arch/techfest30-@main/index.html> | <https://cdn.jsdelivr.net/gh/mitramistry-arch/techfest30-@main/3d/index.html> |
 | **Demo recording** | _add your Google Drive link here (viewer access enabled)_ | _same Drive link works for both tasks_ |
 
 > **Note on the live site.** GitHub Pages has to be switched on for this repository before
@@ -29,6 +30,12 @@ Techfest, IIT Bombay · 19–22 February 2027
 > every push to `main` automatically — including the `/3d/` folder. Both experiences are
 > plain static bundles, so they also run from any static host (Netlify, Vercel, Cloudflare
 > Pages, `python3 -m http.server`) with no configuration at all.
+>
+> Creating the Pages site is an *administration* operation: the repository's API token
+> gets `403 Resource not accessible by integration` for it, and so does the workflow's
+> own `GITHUB_TOKEN` — verified by running the request from inside CI and capturing the
+> response. Until an admin toggles the setting, the **jsDelivr mirror** above serves
+> both pages straight from `main` and is a working public URL today.
 
 > **Submitting:** each task's form asks for a *GitHub link* and a *Google Drive link to a
 > short demo recording with viewer access enabled*. The 3D task accepts **either** one.
@@ -245,6 +252,7 @@ and the particle canvas pauses itself when the hero scrolls out of view or the t
 │   └── js/core-site.js     # the esbuild bundle the browser actually loads
 ├── tools/
 │   ├── optimize-images.sh  # resize + WebP pipeline for regenerated artwork
+│   ├── setup-chromium.sh   # bootstrap the headless Chromium the QA harnesses need
 │   ├── shoot.js            # Task 1 visual QA: screenshots at 4 breakpoints
 │   ├── interact.js         # Task 1 interaction QA: 44 automated assertions
 │   ├── shoot3d.js          # Task 2 visual QA: one screenshot per chapter + bands + mobile
@@ -290,6 +298,7 @@ them, re-run the optimiser:
 
 ```bash
 npm install                                    # playwright + esbuild + three
+./tools/setup-chromium.sh                      # headless Chromium (WebGL-capable)
 
 node tools/interact.js                         # Task 1 — 44 interaction assertions
 node tools/shoot.js                            # Task 1 — screenshots to .shots/
@@ -297,6 +306,12 @@ node tools/shoot.js                            # Task 1 — screenshots to .shot
 node tools/interact3d.js                       # Task 2 — 60 interaction assertions
 node tools/shoot3d.js                          # Task 2 — screenshots to .shots3d/
 ```
+
+`tools/setup-chromium.sh` unpacks the `@sparticuz/chromium` build into the places
+Chromium expects: the binary at `/tmp/chromium`, SwiftShader **flat in `/tmp`** next to
+it (otherwise WebGL fails to start and the page silently falls back to its no-WebGL
+layout), the fontconfig tree at `/tmp/fonts` and the shared libraries at
+`/tmp/al2023/lib`.
 
 `tools/interact.js` exercises the tabs, accordion, form validation, submission, theme
 toggle, scroll spy, anchor scrolling and mobile menu, then sweeps eleven viewport widths
