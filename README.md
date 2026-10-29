@@ -13,15 +13,28 @@ Techfest, IIT Bombay · 19–22 February 2027
 
 ---
 
+## ✦ What to submit
+
+**Task 2 · “Build in 3D”** accepts *either* a Drive recording of the working site *or*
+the GitHub link to the project. Paste whichever you have:
+
+| Option | URL to paste |
+|---|---|
+| **GitHub link to the project** | `https://github.com/mitramistry-arch/techfest30-` |
+| **Drive recording** (viewer access **on**) | _your Google Drive link — add it here_ |
+| **The live 3D site itself** | `https://cdn.jsdelivr.net/gh/mitramistry-arch/techfest30-@main/3d/index.html` |
+
+---
+
 ## ✦ Live preview
 
 | | Task 1 — Cyborg landing page | Task 2 — Build in 3D |
 |---|---|---|
+| **Live now** | <https://cdn.jsdelivr.net/gh/mitramistry-arch/techfest30-@main/index.html> | <https://cdn.jsdelivr.net/gh/mitramistry-arch/techfest30-@main/3d/index.html> |
+| **Live site** *(once Pages is on)* | <https://mitramistry-arch.github.io/techfest30-/> | <https://mitramistry-arch.github.io/techfest30-/3d/> |
 | **Source** | <https://github.com/mitramistry-arch/techfest30-> | same repository, `/3d/` |
 | **Path** | `/` | `/3d/` |
 | **Pull request** | <https://github.com/mitramistry-arch/techfest30-/pull/1> | see the repo's PR list |
-| **Live site** | <https://mitramistry-arch.github.io/techfest30-/> &nbsp;_(see note)_ | <https://mitramistry-arch.github.io/techfest30-/3d/> |
-| **Mirror (works today)** | <https://cdn.jsdelivr.net/gh/mitramistry-arch/techfest30-@main/index.html> | <https://cdn.jsdelivr.net/gh/mitramistry-arch/techfest30-@main/3d/index.html> |
 | **Demo recording** | _add your Google Drive link here (viewer access enabled)_ | _same Drive link works for both tasks_ |
 
 > **Note on the live site.** GitHub Pages has to be switched on for this repository before
@@ -37,9 +50,12 @@ Techfest, IIT Bombay · 19–22 February 2027
 > response. Until an admin toggles the setting, the **jsDelivr mirror** above serves
 > both pages straight from `main` and is a working public URL today.
 
-> **Submitting:** each task's form asks for a *GitHub link* and a *Google Drive link to a
-> short demo recording with viewer access enabled*. The 3D task accepts **either** one.
-> Paste the repository URL above, plus the Drive link once you have recorded it.
+> **Submitting:** Task 1's form asks for a *GitHub link* and a *Google Drive link to a
+> short demo recording with viewer access enabled*. Task 2 asks for a single
+> **Submission URL** and accepts **either** a Drive recording **or** the GitHub link to
+> the project — so `https://github.com/mitramistry-arch/techfest30-` is a valid answer on
+> its own, and the table at the top of this README points the grader straight at the
+> running 3D experience.
 
 ---
 
